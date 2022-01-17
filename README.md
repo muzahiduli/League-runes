@@ -7,4 +7,12 @@ All data is scraped from https://www.metasrc.com/, and saved to local storage fo
 To run, use npm start at project directory and a browser tab at http://localhost:3000 will open to communicate with the server and show errors.
 
 
-Note: The league client won't show the changes to the runes during champion select because the UI is not updated right away and is not dependent on changes in the client
+## Plan
+
+<img src="leagueModel.PNG"/>
+
+## ToDo
+- [ ] Create MongoDB database, User and Champion models in Node
+- [ ] Add user Authentication
+- [ ] Separate data collection and handling user connection to different Node server
+- [ ] Host server to Heroku
