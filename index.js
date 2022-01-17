@@ -5,14 +5,18 @@ const open = require('open')
 
 const server = http.createServer(app)   //HTTP server wrapper around express app
 
-const PORT = 3000
+
+const PORT = 3001
 server.listen(PORT, () => {
     console.log(`Server runnign on port ${PORT}`)
-    open('http://localhost:3000')
-
+    //open('http://localhost:3001/')
 })
 
-
+process.on('SIGTERM', () => {       //Defining what to do when signal 'SIGTERM' is sent
+    server.close(() => {
+        console.log('Server closed')
+    })
+})
 
 
 

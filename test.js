@@ -1,9 +1,7 @@
 const cheerio = require("cheerio")
 const axios = require("axios")
 const fs = require('fs')
-const { TIMEOUT } = require("dns")
-//const url = 'https://www.metasrc.com/aram/na/champion/ezreal'
-
+const path = require('path')
 
 async function getRunes(url) {
     const request = await axios.get(url)
@@ -41,30 +39,39 @@ async function getChamps() {
 }
 
 
-async function getAllRunes() {
+async function getAllRunes(gameMode) {
     const runes = []
     const champions = JSON.parse(fs.readFileSync('./champions.json', 'utf8'))
     const waitFor = delay => new Promise(resolve => setTimeout(resolve, delay));
     for (let i=0; i<champions.length; i++) {
-        let url = `https://www.metasrc.com/aram/na/champion/${champions[i][1]}`
+        let champId = champions[i][0]
+        let champName = champions[i][1]
+        let url = `https://www.metasrc.com/${gameMode}/na/champion/${champName}`
         let obj = new Object()
         //obj[champions[i]] = await getRunes(url)
-        obj[champions[i]] = await getRunes(url)
+        obj[champName] = await getRunes(url)     //champname : {runes}
+        obj[champName]["id"] = parseInt(champId)
         runes.push(obj)
-        await waitFor(200)
+        //await waitFor(200)
     }
     return runes
 }
-async function saveRunes() {
-    const runes = await getAllRunes()
+async function saveRunes(gameMode) {
+    if (gameMode !== "5v5" && gameMode !== "aram") {
+        console.log("game mode does not exist")
+        return
+    }
+    const runes = await getAllRunes(gameMode)
     console.log(runes.length)
     data = JSON.stringify(runes, null, 4)
-    fs.writeFile('runes.json', data, err => {
+    const fileLocation = path.join(__dirname, "data", `${gameMode}runes.json`)
+    fs.writeFile(fileLocation, data, err => {
         console.log('runes saved')
     })
 }
 
-
+//saveRunes("aram")
+//saveRunes("5v5")
 
 
 
@@ -72,4 +79,4 @@ async function saveRunes() {
 test1('https://www.metasrc.com/aram/na/champion/ezreal')
 test1('https://www.metasrc.com/aram/na/champion/nami')
 test1('https://www.metasrc.com/aram/na/champion/chogath') */
-module.exports = {getRunes}
+module.exports = {getChamps, saveRunes}
