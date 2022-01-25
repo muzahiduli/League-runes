@@ -7,7 +7,7 @@ All data is scraped from https://www.metasrc.com/, and saved to local storage fo
 To run, use npm start at project directory and a browser tab at http://localhost:3000 will open to communicate with the server and show errors.
 
 
-## Plan
+## (Future) Plan
 
 <img src="leagueModel.PNG"/>
 
